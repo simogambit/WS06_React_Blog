@@ -1,84 +1,81 @@
-# WS06 - React (Built on REST API Week)
+# WS06 React
 
-This repository continues from the previous REST API topic.  
-Goal: keep the backend stable and teach React step-by-step on top of that API.
+This repository contains a student starter package and a complete reference solution for the WS06 React + REST API workshop.
 
-## Target Repository Structure
+## Current Structure
 
 ```text
 WS06_React/
 ├─ README.md
 ├─ requirements.md
-├─ docs/
-│  ├─ week-overview.md
-│  ├─ assignment.md
-│  ├─ grading-rubric.md
-│  └─ setup.md
-├─ backend/
-│  ├─ package.json
-│  ├─ server.js
-│  ├─ models/
-│  ├─ routes/
-│  └─ public/
-├─ frontend/
-│  ├─ starter/
+├─ Starter/
+│  ├─ backend/
+│  │  ├─ .env.example
+│  │  ├─ README.md
 │  │  ├─ package.json
-│  │  ├─ src/
-│  │  └─ public/
-│  └─ solution/
+│  │  ├─ models/
+│  │  └─ routes/
+│  └─ frontend/
+│     ├─ README.md
 │     ├─ package.json
-│     ├─ src/
-│     └─ public/
-├─ exercises/
-│  ├─ 01_components/
-│  ├─ 02_props_state/
-│  ├─ 03_effects_and_fetch/
-│  ├─ 04_forms/
-│  ├─ 05_routing/
-│  └─ 06_api_integration/
-├─ shared/
-│  ├─ postman/
-│  ├─ seed/
-│  └─ examples/
-└─ archive/
-   └─ rest-api-week/
+│     ├─ vite.config.js
+│     └─ src/
+├─ solution/
+│  ├─ backend/
+│  │  ├─ README.md
+│  │  ├─ package.json
+│  │  ├─ server.js
+│  │  ├─ models/
+│  │  └─ routes/
+│  └─ frontend/
+│     ├─ README.md
+│     ├─ package.json
+│     ├─ vite.config.js
+│     └─ src/
+└─ tuntiharjoitukset/
 ```
 
-## Concrete Mapping from Current Folders
+## Folder Purpose
 
-- `starter/` → `backend/`
-  - Use as the baseline backend for React integration.
-- `Solution/` → `archive/rest-api-week/solution-backend/`
-  - Keep as teacher reference from REST week.
-- `tuntiharjoitukset/` → `archive/rest-api-week/tuntiharjoitukset/`
-  - Preserve exercise history, do not mix with new React flow.
-- Current root docs:
-  - `requirements.md` → keep at root for continuity OR copy to `docs/assignment.md`.
+- `Starter/`
+  - Student workspace with TODOs and guided tasks.
+  - Students should implement missing backend and frontend features here.
 
-## Suggested Migration Order
+- `solution/`
+  - Teacher/reference implementation.
+  - Use this to compare behavior or review complete code.
 
-1. Create new top-level folders (`docs`, `frontend`, `exercises`, `shared`, `archive`).
-2. Move current `starter/` into `backend/`.
-3. Move `Solution/` and `tuntiharjoitukset/` under `archive/rest-api-week/`.
-4. Scaffold `frontend/starter` and `frontend/solution` React apps.
-5. Add weekly React tasks under `exercises/`.
-6. Update docs in `docs/` and keep this root README as navigation.
+- `tuntiharjoitukset/`
+  - Additional class exercises kept for course support.
 
-## Teaching Flow (WS06)
+## Recommended Workflow
 
-- Keep backend API contract unchanged (`/api/posts`).
-- Teach React in increments:
-  1. Components and JSX
-  2. Props and state
-  3. `useEffect` + fetching data
-  4. Controlled forms
-  5. Client routing
-  6. Full CRUD integration with backend
+1. Build and test in `Starter/backend`.
+2. Build and test in `Starter/frontend`.
+3. Compare with `solution/` only when needed.
 
-## Minimal Run Conventions
+## Run Instructions
 
-- Backend: run inside `backend/`.
-- Frontend starter: run inside `frontend/starter/`.
-- Frontend solution: run inside `frontend/solution/`.
+### Backend starter
 
-Keep student work in starter folders only; solution folders are teacher/reference material.
+```bash
+cd Starter/backend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+### Frontend starter
+
+```bash
+cd Starter/frontend
+npm install
+npm run dev
+```
+
+The frontend uses `/api/posts` and expects the backend to run on `http://localhost:3000`.
+
+## Notes
+
+- Keep student implementation work inside `Starter/`.
+- Keep `solution/` unchanged as the reference baseline.

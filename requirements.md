@@ -1,185 +1,205 @@
-# Workshop 05 - Requirements
+# Workshop 06 - Requirements
 
 ## Overview
-This document describes the tasks and requirements for Workshop 05 - Building a REST API with Express and MongoDB.
+This document describes the tasks and requirements for Workshop 06 — Building a React SPA with a REST API backend.
 
 Complete all mandatory tasks. Optional tasks are provided for additional practice.
 
 ---
 
 ## General Rules
-- Work only inside the `starter/` folder
-- Do not commit `node_modules` or `.env`
+- Work only inside the `Starter/` folder
+- Do not commit `node_modules`, `.env`, or `dist/`
 - Commit your work regularly with meaningful commit messages
-- Use Express and Mongoose for the implementation
+- Use Express and Mongoose for the backend
+- Use React with Vite and react-router-dom for the frontend
 - Keep API responses in JSON format
-- Define routes using Express Router files in the `routes/` folder
 
 ---
 
 ## Environment Setup
 
-### Create a `.env` file
-Create a `.env` file in the `starter/` folder using `.env.example` as a template.
+### Backend
+Create a `.env` file in `Starter/backend/` using `.env.example` as a template:
 
-Example:
 ```env
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/blog
 PORT=3000
 ```
 
-Atlas target for this workshop:
-- Database: `blog`
-- Collection: `posts`
+### Frontend
+No extra configuration needed. The Vite dev server proxies `/api` requests to `http://localhost:3000`.
 
 ---
 
-## Mandatory Tasks
+## Part 1 — Backend
 
-### Task 1 - Setup Express and MongoDB
-**Description**
-Prepare the starter application so it can serve pages and connect to MongoDB.
+Work in `Starter/backend/`.
+
+### Task 1 - Set up the Express server
+**File:** `server.js`
 
 **Requirements**
-- Install required dependencies
 - Load environment variables using `dotenv`
 - Create an Express application instance
 - Enable JSON body parsing with `express.json()`
-- Connect to MongoDB using Mongoose
-- Define the port using `process.env.PORT || 3000`
-
----
-
-### Task 2 - Add the Page Routes
-**Description**
-Keep the familiar page routes and add a new `/blog` route.
-
-**Requirements**
-- Create or complete `routes/pages.js`
-- Create a GET route for `/`
-- Create a GET route for `/about`
-- Create a GET route for `/contact`
-- Create a GET route for `/blog`
-- Use `res.sendFile()` with files from the `public/` folder
-- Mount the page router in `server.js`
-
-**Expected Outcome**
-- The browser routes should load HTML pages correctly
-
----
-
-### Task 3 - Create the Post Model
-**Description**
-Define a Mongoose model for blog posts.
-
-**Requirements**
-- Create or complete `models/Post.js`
-- Add at least these fields:
-  - `title` (String, required)
-  - `content` (String, required)
-  - one additional field of your choice
-- Export the model
-
-**Suggested Additional Fields**
-- `author`
-- `category`
-- `tags`
-
----
-
-### Task 4 - Implement Create Operation
-**Description**
-Create a REST endpoint for adding a new blog post.
-
-**Requirements**
-- Create or complete `routes/posts.js`
-- Implement `POST /api/posts`
-- Read request data from `req.body`
-- Save the document to MongoDB
-- Return the created post as JSON
-- Handle validation or server errors appropriately
-
-**Example Test**
-```bash
-curl -X POST http://localhost:3000/api/posts \
-  -H "Content-Type: application/json" \
-  -d '{"title":"First Post","content":"Hello REST API","author":"Student"}'
-```
-
----
-
-### Task 5 - Implement Read Operations
-**Description**
-Create endpoints for fetching blog posts.
-
-**Requirements**
-- Implement `GET /api/posts` to return all posts
-- Implement `GET /api/posts/:id` to return a single post
-- Return `404` if the post is not found
-- Return `400` for invalid MongoDB ObjectIds
-
----
-
-### Task 6 - Implement Update and Delete Operations
-**Description**
-Complete the REST API with update and delete functionality.
-
-**Requirements**
-- Implement `PUT /api/posts/:id`
-- Implement `DELETE /api/posts/:id`
-- Return proper status codes
-- Return the updated document or a success message
-
----
-
-### Task 7 - Add Error Handling and Start the Server
-**Description**
-Finish the application flow with proper error handling and startup logic.
-
-**Requirements**
+- Mount `routes/posts.js` at `/api/posts`
 - Add a 404 handler for unmatched routes
-- Add a 500 handler for server errors
-- Start the Express app with `app.listen()`
-- Log a helpful startup message with available routes
+- Add a 500 error handler
+- Connect to MongoDB using Mongoose and the `MONGODB_URI` environment variable
+- Start the server with `app.listen()` after a successful database connection
+
+---
+
+### Task 2 - Complete the Post model
+**File:** `models/Post.js`
+
+**Requirements**
+- Add these fields to the existing schema:
+  - `title` — String, required, trimmed, minlength 3
+  - `content` — String, required, trimmed, minlength 10
+  - `author` — String, required, trimmed
+- Enable automatic timestamps (`createdAt`, `updatedAt`)
+
+---
+
+### Task 3 - Implement Update
+**File:** `routes/posts.js`
+
+The file already contains working `POST /`, `GET /`, and `GET /:id` handlers.
+
+**Requirements**
+- Implement `PUT /:id`
+  - Validate the `id` with `isValidObjectId` (already provided)
+  - Update the matching post using `Post.findByIdAndUpdate()`
+  - Use `{ new: true, runValidators: true }` options
+  - Return `404` if no post with that id exists
+  - Return `400` for validation errors and `500` for other errors
+
+---
+
+### Task 4 - Implement Delete
+**File:** `routes/posts.js`
+
+**Requirements**
+- Implement `DELETE /:id`
+  - Validate the `id` with `isValidObjectId` (already provided)
+  - Delete the matching post using `Post.findByIdAndDelete()`
+  - Return `404` if no post with that id exists
+  - Return a JSON success message on deletion
+  - Return `500` for unexpected errors
+
+---
+
+## Part 2 — Frontend
+
+Work in `Starter/frontend/`.
+
+### Task 5 - Verify routing
+**File:** `src/App.jsx`
+
+**Requirements**
+- Confirm each route maps to the expected page component:
+  - `/` → `LandingPage`
+  - `/about` → `AboutPage`
+  - `/contact` → `ContactPage`
+  - `/blog` → `HomePage`
+  - `/posts/new` → `NewPostPage`
+  - `/posts/:id` → `PostPage`
+  - `/posts/:id/edit` → `EditPostPage`
+  - `*` → `NotFoundPage`
+
+---
+
+### Task 6 - Complete the navigation
+**File:** `src/components/Header.jsx`
+
+The file already has `Home` and `Blog` links.
+
+**Requirements**
+- Add `NavLink` entries for `/about`, `/contact`, and `/posts/new`
+
+---
+
+### Task 7 - Fetch and display all posts
+**File:** `src/pages/HomePage.jsx`
+
+**Requirements**
+- In `useEffect`, fetch all posts from `GET /api/posts`
+- Store the result in `posts` state
+- Handle loading and error states
+- The post list already renders `PostCard` components when `posts` is non-empty
+
+---
+
+### Task 8 - Create a new post
+**File:** `src/pages/NewPostPage.jsx`
+
+**Requirements**
+- In `handleSubmit`, read form values from the submitted form
+- Send a `POST /api/posts` request with a JSON body containing `title`, `content`, and `author`
+- On success, navigate to `/posts/:id` using the returned post's `_id`
+- Display a user-visible error message on failure
+
+---
+
+### Task 9 - View a single post
+**File:** `src/pages/PostPage.jsx`
+
+**Requirements**
+- In `useEffect`, fetch the post from `GET /api/posts/:id` using the `id` from `useParams()`
+- Store the post in state and render title, author, date, and content
+- The delete button and Edit link are already in the template
+- Implement `handleDelete` to call `DELETE /api/posts/:id` and navigate to `/blog` on success
+
+---
+
+### Task 10 - Edit a post
+**File:** `src/pages/EditPostPage.jsx`
+
+**Requirements**
+- In `useEffect`, fetch the existing post from `GET /api/posts/:id`
+- Pass the fetched post as `initialData` to `PostForm`
+- In `handleSubmit`, read form values and send a `PUT /api/posts/:id` request
+- Navigate to `/posts/:id` after a successful update
+- Show an error message on failure
 
 ---
 
 ## Validation / Acceptance Criteria
-Your solution will be considered complete if:
-- The server starts without syntax errors
-- MongoDB connection works
-- All page routes work as expected
-- CRUD endpoints are implemented and tested
-- API responses use JSON
-- Proper status codes are returned for success and error cases
-- No unnecessary files are committed
+Your solution is complete when:
+- The backend starts without errors and connects to MongoDB
+- `POST /api/posts` creates and returns a new post
+- `GET /api/posts` returns all posts
+- `GET /api/posts/:id` returns a single post or `404`
+- `PUT /api/posts/:id` updates and returns a post or `404`
+- `DELETE /api/posts/:id` deletes a post or returns `404`
+- The React app renders without errors
+- The blog page loads and lists posts from the API
+- Creating a new post redirects to the post detail page
+- The post detail page shows the post and allows deletion
+- The edit page loads the existing post and saves changes
 
 ---
 
 ## Optional Tasks (Bonus)
+- Add pagination to `GET /api/posts` (e.g. `?page=1&limit=10`)
+- Add filtering by author (`?author=name`)
+- Add a search field to `HomePage`
+- Add schema validation rules such as `maxlength`
 - Add request logging middleware
-- Add pagination to `GET /api/posts`
-- Add filtering by author or category
-- Add schema validation rules such as `minlength`
-- Create a Postman collection for all routes
+- Create a Postman collection covering all routes
 
 ---
 
 ## Submission Checklist
-- [ ] All mandatory tasks are completed
-- [ ] Application starts successfully
-- [ ] Page routes load correctly
-- [ ] CRUD endpoints work correctly
-- [ ] MongoDB data is persisted
+- [ ] Backend starts and connects to MongoDB
+- [ ] All six CRUD endpoints are implemented and tested
+- [ ] React app renders without console errors
+- [ ] Blog listing page fetches and displays posts
+- [ ] New post form creates a post and redirects
+- [ ] Post detail page shows a post and supports deletion
+- [ ] Edit page loads existing post data and saves changes
+- [ ] Navigation links work for all routes
 - [ ] Code is pushed to GitHub
-- [ ] Repository does not contain `node_modules`
-- [ ] Repository does not contain `.env`
-
----
-
-## Notes
-- `/blog` is a page route for users in the browser
-- `/api/posts` is a resource route for REST operations
-- Keep those two concepts clearly separated in your implementation
-- Keep route definitions in the `routes/` folder and mount them from `server.js`
-- Ask questions if any requirement is unclear
+- [ ] Repository does not contain `node_modules`, `.env`, or `dist/`
