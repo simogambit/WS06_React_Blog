@@ -17,18 +17,14 @@
       <a href="/contact">Contact</a>
       <a href="/blog">Blog</a>
     </nav>
-    <section class="panel panel--feature">
-      <p class="eyebrow">Blog</p>
-      <h1>This route introduces the new REST resource</h1>
-      <p>The page route is <strong>/blog</strong>, but the actual data operations happen through <strong>/api/posts</strong>.</p>
-      <div class="api-list">
-        <div><span>POST</span><code>/api/posts</code></div>
-        <div><span>GET</span><code>/api/posts</code></div>
-        <div><span>GET</span><code>/api/posts/:id</code></div>
-        <div><span>PUT</span><code>/api/posts/:id</code></div>
-        <div><span>DELETE</span><code>/api/posts/:id</code></div>
+
+    <section class="panel">
+      <p class="eyebrow">Posts</p>
+      <div id="posts-container">
+        <p id="posts-status">Loading posts...</p>
       </div>
     </section>
   </main>
+  <script src="/scripts/blog.js"></script>
 </body>
 </html>
