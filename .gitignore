@@ -6,8 +6,5 @@ yarn-debug.log*
 yarn-error.log*
 dist/
 coverage/
-tuntiharjoitukset/
 
 solution/
-frontend/
-backend/
