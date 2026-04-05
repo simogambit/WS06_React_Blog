@@ -1,48 +1,70 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const pagesRouter = require('./routes/pages');
 const postsRouter = require('./routes/posts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const publicDir = path.join(__dirname, 'public');
+const frontendDistDir = path.resolve(__dirname, '../solution/frontend/dist');
+const frontendEntryFile = path.join(frontendDistDir, 'index.html');
+const hasFrontendBuild = fs.existsSync(frontendEntryFile);
 
 async function connectToDatabase() {
-  // TODO (student): Connect to MongoDB using mongoose.
-  // Suggested steps:
-  // 1) Check that process.env.MONGODB_URI exists.
-  // 2) Call mongoose.connect(process.env.MONGODB_URI, { dbName: 'blog' }).
-  // 3) Log success and handle possible errors.
-  console.log('TODO: implement connectToDatabase()');
+  if (!process.env.MONGODB_URI) {
+    console.warn('MONGODB_URI is missing. Create a .env file in backend/ before testing database features.');
+    return;
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, { dbName: 'blog' });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+  }
 }
 
-app.locals.publicDir = publicDir;
 app.use(express.json());
-app.use(express.static(publicDir));
 
-// TODO: Complete the page routes in routes/pages.js.
-app.use('/', pagesRouter);
-
-// TODO: Complete the API routes in routes/posts.js.
 app.use('/api/posts', postsRouter);
 
+if (hasFrontendBuild) {
+  app.use(express.static(frontendDistDir));
+}
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
+
+  if (!hasFrontendBuild) {
+    return res.status(404).json({
+      message: 'Frontend build not found. Run "npm run build" in frontend/solution to enable SPA hosting from Express.',
+    });
+  }
+
+  return res.sendFile(frontendEntryFile);
+});
+
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(publicDir, '404.html'));
+  res.status(404).json({ message: 'Route not found' });
 });
 
 app.use((error, req, res, next) => {
   console.error(error.stack);
-  res.status(500).sendFile(path.join(publicDir, '500.html'));
+  return res.status(500).json({ message: 'Internal server error' });
 });
 
 connectToDatabase().then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-    console.log('Mounted routers:');
-    console.log('  / -> routes/pages.js');
     console.log('  /api/posts -> routes/posts.js');
+    console.log(
+      hasFrontendBuild
+        ? `  SPA frontend -> ${frontendDistDir}`
+        : '  SPA frontend -> build missing (run "npm run build" in frontend/solution)',
+    );
   });
 });
