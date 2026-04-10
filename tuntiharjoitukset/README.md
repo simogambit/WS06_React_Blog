@@ -2,10 +2,6 @@
 
 Taman kansion harjoitukset etenevat jarjestyksessa perusteista kohti pienimuotoista integraatiota.
 
-## Opettajan materiaali
-
-- [TEACHING_SCRIPT_FI.md](TEACHING_SCRIPT_FI.md) - Yksi suomenkielinen opetusrunko harjoituksille 01-06.
-
 ## Harjoitukset
 
 - [01_components](01_components) - Komponenttien perusteet, props ja useState alkeet
