@@ -13,8 +13,21 @@ function HomePage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    // TODO (student): Replace this placeholder with real fetch logic.
-    setLoading(false)
+    fetch('http://localhost:3000/api/posts')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts from server')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setPosts(data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        setError(err.message)
+        setLoading(false)
+      })
   }, [])
 
   if (loading) return <p className="status-msg">Loading posts…</p>
@@ -26,12 +39,12 @@ function HomePage() {
         <p className="eyebrow">Blog</p>
         <h1 className="page-title">All posts</h1>
         <p className="page-copy">
-          TODO: Implement fetching posts from <code>/api/posts</code>.
+          Read the latest blog posts below.
         </p>
       </div>
 
       {posts.length === 0 ? (
-        <p className="status-msg">No posts yet. Implement fetch logic in HomePage first.</p>
+        <p className="status-msg">No posts yet. Be the first to write one!</p>
       ) : (
         <ul className="post-list">
           {posts.map((post) => (

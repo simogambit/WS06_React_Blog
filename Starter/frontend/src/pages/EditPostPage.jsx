@@ -18,8 +18,21 @@ function EditPostPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    // TODO (student): Replace this placeholder with GET /api/posts/:id fetch logic.
-    setLoading(false)
+    fetch(`http://localhost:3000/api/posts/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch post')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setPost(data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        setError(err.message)
+        setLoading(false)
+      })
   }, [id])
 
   async function handleSubmit(e) {
@@ -27,14 +40,33 @@ function EditPostPage() {
     setSubmitting(true)
     setError(null)
 
-    // TODO (student): Implement PUT /api/posts/:id.
-    setError('TODO: implement PUT /api/posts/:id in EditPostPage')
-    setSubmitting(false)
+    try {
+      const formData = new FormData(e.target)
+      const updatedPost = Object.fromEntries(formData.entries())
+
+      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPost),
+      })
+
+      if (!response.ok) {
+        const errData = await response.json()
+        throw new Error(errData.error || 'Failed to update post')
+      }
+
+      navigate(`/posts/${id}`)
+    } catch (err) {
+      setError(err.message)
+      setSubmitting(false)
+    }
   }
 
   if (loading) return <p className="status-msg">Loading…</p>
   if (error && !post) return <p className="status-msg error">{error}</p>
-  if (!post) return <p className="status-msg">TODO: Load a post before editing.</p>
+  if (!post) return <p className="status-msg">Post not found.</p>
 
   return (
     <div>

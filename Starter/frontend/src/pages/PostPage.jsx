@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 
-// TODO (student): Implement single-post view and delete flow.
-// Suggested steps:
-// 1) Fetch a single post with GET /api/posts/:id.
-// 2) Render title, author, date, and content.
-// 3) Add delete handler with DELETE /api/posts/:id.
-// 4) Navigate back to /blog after successful delete.
 function PostPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -17,20 +11,49 @@ function PostPage() {
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
-    // TODO (student): Replace this placeholder with GET /api/posts/:id fetch logic.
-    setLoading(false)
+    fetch(`http://localhost:3000/api/posts/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch post')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setPost(data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        setError(err.message)
+        setLoading(false)
+      })
   }, [id])
 
   async function handleDelete() {
-    // TODO (student): Implement DELETE /api/posts/:id and navigate('/blog').
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?")
+    if (!confirmDelete) return
+
     setDeleting(true)
-    setError('TODO: implement DELETE /api/posts/:id in PostPage')
-    setDeleting(false)
+    setError(null)
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete post')
+      }
+
+      navigate('/blog')
+    } catch (err) {
+      setError(err.message)
+      setDeleting(false)
+    }
   }
 
   if (loading) return <p className="status-msg">Loading…</p>
   if (error && !post) return <p className="status-msg error">{error}</p>
-  if (!post) return <p className="status-msg">TODO: Load a post by id in PostPage.</p>
+  if (!post) return <p className="status-msg">Post not found.</p>
 
   const date = post.createdAt
     ? new Date(post.createdAt).toLocaleDateString('fi-FI', { year: 'numeric', month: 'long', day: 'numeric' })
