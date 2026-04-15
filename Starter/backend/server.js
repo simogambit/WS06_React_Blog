@@ -30,7 +30,7 @@ async function connectToDatabase() {
 
 app.locals.publicDir = publicDir;
 
-// LISÄTTY: Sallitaan liikenne frontendin (portti 5173) ja backendin välillä
+// LISÄTTY: Sallitaan CORS-liikenne kaikista osoitteista (tärkeä Web Servicelle)
 app.use(cors()); 
 app.use(express.json());
 app.use(express.static(publicDir));
@@ -38,9 +38,9 @@ app.use(express.static(publicDir));
 //app.use('/', pagesRouter);
 app.use('/api/posts', postsRouter);
 
-// 404 - Reittiä ei löydy
+// 404 - Reittiä ei löydy (MUOKATTU: Palautetaan JSON-viesti tiedoston sijaan)
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(publicDir, '404.html'));
+  res.status(404).json({ error: 'Not Found', message: `Route ${req.originalUrl} not found.` });
 });
 
 // 500 - Palvelinvirhe (MUOKATTU: Estetään ohjelman kaatuminen, jos 500.html puuttuu)
@@ -51,9 +51,8 @@ app.use((error, req, res, next) => {
 
 connectToDatabase().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
     console.log('Mounted routers:');
-    console.log('  / -> routes/pages.js');
     console.log('  /api/posts -> routes/posts.js');
   });
 });
