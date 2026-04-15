@@ -23,7 +23,7 @@ function App() {
       {/* 2. Props — passing data into a component */}
       <section className="section">
         <h2 className="section-title">Props</h2>
-        <Greeting name="Student" />
+        <Greeting name="Laurea Fullstack" />
       </section>
 
       {/* 3. List rendering — .map() turns an array into JSX.
