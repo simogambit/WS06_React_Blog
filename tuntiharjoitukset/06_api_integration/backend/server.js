@@ -2,16 +2,29 @@ const express = require('express')
 const cors = require('cors')
 
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
+
+// Comma-separated list of allowed origins, for example:
+// FRONTEND_ORIGIN=http://localhost:5177,https://my-frontend.onrender.com
+const ALLOWED_ORIGINS = (process.env.FRONTEND_ORIGIN || 'http://localhost:5177')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(express.json())
 
-// CORS is enabled so the frontend dev server (Vite on :5177) can call this API
-// directly. When you build and serve the frontend from the same origin you can
-// remove this. In this exercise the Vite proxy (vite.config.js) already handles
-// CORS in dev, but cors() is included here to show where it lives in production.
-app.use(cors({ origin: 'http://localhost:5177' }))
+// Allow browser requests from known frontend origins.
+// Requests without an Origin header (curl, server-to-server) are allowed.
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true)
+      return
+    }
+    callback(new Error(`CORS blocked for origin: ${origin}`))
+  },
+}))
 
 // ── In-memory data store ──────────────────────────────────────────────────────
 // A simple array replaces a real database for this exercise.

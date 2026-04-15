@@ -24,6 +24,46 @@ server: {
 
 Any `fetch('/api/...')` call from React is forwarded by Vite to the backend at `localhost:3001`. The browser only ever talks to `localhost:5177`, so there are no CORS issues during development.
 
+## API base URL in production
+
+Frontend API calls are built from `VITE_API_BASE_URL`:
+
+- Empty value: calls use relative paths like `/api/notes`
+- Set value: calls use `https://your-backend.onrender.com/api/notes`
+
+This lets the same code work in both local Compose and Render.
+
+## Docker
+
+Build and run frontend container directly:
+
+```bash
+docker build -t ws06-api-frontend .
+docker run --rm -p 8080:80 ws06-api-frontend
+```
+
+Or run both services from parent folder:
+
+```bash
+cd ..
+docker compose up --build
+```
+
+Then open `http://localhost:8080`.
+
+## Render
+
+For Render Docker deploys:
+
+1. Deploy backend first and copy its public URL.
+2. Set frontend env var:
+
+```env
+VITE_API_BASE_URL=https://your-backend.onrender.com
+```
+
+3. Redeploy frontend (Vite embeds this value at build time).
+
 ## API module
 
 All HTTP calls live in **`src/api/notes.js`** — components never call `fetch()` directly.

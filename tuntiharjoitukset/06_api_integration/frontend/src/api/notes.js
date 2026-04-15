@@ -8,7 +8,8 @@
 // Every function throws an Error on non-2xx responses so callers can catch it
 // and display an error message without checking res.ok themselves.
 
-const BASE = '/api/notes'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+const BASE = `${API_BASE_URL}/api/notes`
 
 async function request(url, options = {}) {
   const res = await fetch(url, {

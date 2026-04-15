@@ -23,6 +23,48 @@ browser  ←→  Vite dev server :5177  ←→  Express backend :3001
 
 In development the Vite proxy makes `fetch('/api/notes')` reach the backend at `localhost:3001` transparently — no CORS configuration needed in the browser.
 
+## Deploying with Docker Compose (local)
+
+From the `06_api_integration` folder:
+
+```bash
+docker compose up --build
+```
+
+Services:
+- Frontend: `http://localhost:8080`
+- Backend API: `http://localhost:3001/api/notes`
+
+Compose uses:
+- `frontend/nginx.conf` to proxy `/api/*` to the backend container
+- `docker-compose.yml` to start `frontend` and `backend` together
+
+To stop:
+
+```bash
+docker compose down
+```
+
+## Deploying to Render
+
+Render does not run `docker-compose.yml` directly.
+Use the included `render.yaml` Blueprint instead.
+
+1. Push this repository to GitHub.
+2. In Render, create a new Blueprint and point it to the repo.
+3. Render reads `tuntiharjoitukset/06_api_integration/render.yaml` and creates:
+  - `ws06-api-backend` (Docker web service)
+  - `ws06-api-frontend` (Docker web service)
+4. After first deploy, set environment variables in Render:
+  - On backend: `FRONTEND_ORIGIN=https://<your-frontend>.onrender.com`
+  - On frontend: `VITE_API_BASE_URL=https://<your-backend>.onrender.com`
+5. Trigger a redeploy of frontend after setting `VITE_API_BASE_URL`.
+
+Important:
+- `VITE_API_BASE_URL` is a build-time variable for Vite.
+- If it is empty, frontend uses relative `/api/...` URLs (good for local proxy/compose).
+- On Render (separate domains), set it to the backend public URL.
+
 ## Project structure
 
 ```

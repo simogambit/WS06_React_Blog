@@ -13,6 +13,37 @@ npm start        # node server.js (no auto-restart)
 
 Server starts on **http://localhost:3001**.
 
+## Docker
+
+Build and run backend container directly:
+
+```bash
+docker build -t ws06-api-backend .
+docker run --rm -p 3001:3001 \
+  -e PORT=3001 \
+  -e FRONTEND_ORIGIN=http://localhost:8080 \
+  ws06-api-backend
+```
+
+Or run both backend and frontend with Compose from the parent folder:
+
+```bash
+cd ..
+docker compose up --build
+```
+
+## Render
+
+This backend is configured for Render Docker deploys:
+- `PORT` is read from environment (`process.env.PORT`)
+- `FRONTEND_ORIGIN` can be a comma-separated allowlist
+
+Example:
+
+```env
+FRONTEND_ORIGIN=http://localhost:5177,https://your-frontend.onrender.com
+```
+
 ## REST API
 
 | Method | Path | Body | Status | Description |
@@ -67,4 +98,10 @@ backend/
 
 ## CORS
 
-CORS is configured to allow requests from `http://localhost:5177` (the Vite frontend). In development the **Vite proxy** already avoids cross-origin requests, so the CORS middleware is mainly there as a reference for how it would be configured in production.
+CORS is configured from `FRONTEND_ORIGIN`.
+
+- Default: `http://localhost:5177`
+- Supports multiple origins separated by commas
+- Requests without an Origin header (for example curl) are allowed
+
+In development, the Vite proxy can avoid browser CORS entirely, but CORS is still useful for production deployments where frontend and backend have different domains.
