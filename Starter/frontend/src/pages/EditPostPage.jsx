@@ -18,7 +18,7 @@ function EditPostPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/posts/${id}`)
+    fetch(`https://ws06-react-blog.onrender.com/api/posts/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch post')
@@ -44,7 +44,7 @@ function EditPostPage() {
       const formData = new FormData(e.target)
       const updatedPost = Object.fromEntries(formData.entries())
 
-      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+      const response = await fetch(`https://ws06-react-blog.onrender.com/api/posts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

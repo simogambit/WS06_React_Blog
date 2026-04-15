@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-The app uses Vite proxy, so API calls to `/api/posts` go to `http://localhost:3000` in development.
+The app uses Vite proxy, so API calls to `/api/posts` go to `https://ws06-react-blog.onrender.com` in development.
 
 ## What You Need To Build
 

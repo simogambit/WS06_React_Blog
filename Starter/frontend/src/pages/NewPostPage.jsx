@@ -24,7 +24,7 @@ function NewPostPage() {
       const newPost = Object.fromEntries(formData.entries())
 
       // 2) POST JSON body to /api/posts
-      const response = await fetch('http://localhost:3000/api/posts', {
+      const response = await fetch('https://ws06-react-blog.onrender.com/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

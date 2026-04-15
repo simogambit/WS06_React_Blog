@@ -73,7 +73,7 @@ npm install
 npm run dev
 ```
 
-The frontend uses `/api/posts` and expects the backend to run on `http://localhost:3000`.
+The frontend uses `/api/posts` and expects the backend to run on `https://ws06-react-blog.onrender.com`.
 
 ## Notes
 

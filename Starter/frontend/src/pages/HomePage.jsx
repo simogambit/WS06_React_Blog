@@ -13,7 +13,7 @@ function HomePage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/posts')
+    fetch('https://ws06-react-blog.onrender.com/api/posts')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch posts from server')

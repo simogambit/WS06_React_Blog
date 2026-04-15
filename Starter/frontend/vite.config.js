@@ -7,7 +7,7 @@ export default defineConfig({
     // Proxy API requests to the Express backend during development.
     // The browser calls /api/posts; Vite forwards it to localhost:3000.
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/api': 'https://ws06-react-blog.onrender.com',
     },
   },
 })

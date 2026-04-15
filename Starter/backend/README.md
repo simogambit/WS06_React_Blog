@@ -17,7 +17,7 @@ npm run dev
 ```
 
 Default API base URL:
-- http://localhost:3000/api/posts
+- https://ws06-react-blog.onrender.com/api/posts
 
 ## Files You Need To Complete
 

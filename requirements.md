@@ -28,7 +28,7 @@ PORT=3000
 ```
 
 ### Frontend
-No extra configuration needed. The Vite dev server proxies `/api` requests to `http://localhost:3000`.
+No extra configuration needed. The Vite dev server proxies `/api` requests to `https://ws06-react-blog.onrender.com`.
 
 ---
 

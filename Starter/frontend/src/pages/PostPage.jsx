@@ -11,7 +11,7 @@ function PostPage() {
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/posts/${id}`)
+    fetch(`https://ws06-react-blog.onrender.com/api/posts/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch post')
@@ -36,7 +36,7 @@ function PostPage() {
     setError(null)
 
     try {
-      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+      const response = await fetch(`https://ws06-react-blog.onrender.com/api/posts/${id}`, {
         method: 'DELETE',
       })
 
