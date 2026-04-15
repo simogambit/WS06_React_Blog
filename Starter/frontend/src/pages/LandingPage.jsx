@@ -4,10 +4,10 @@ function LandingPage() {
   return (
     <div className="landing-page">
       <section className="hero-panel">
-        <p className="eyebrow">WS06 React</p>
-        <h1 className="hero-title">Move the full frontend into React without touching the API contract.</h1>
+        <p className="eyebrow">Simon portfolio- Kouluprojekti WS06</p>
+        <h1 className="hero-title">Portfolion alku </h1>
         <p className="hero-copy">
-          This version keeps the existing blog CRUD flow, but the browser UI now lives in one React app instead of a set of server-rendered HTML pages.
+          Tämä on salainen portfolio, joka on luotu kouluprojektia varten. Se on rakennettu Reactilla ja Expressillä, ja se toimii blogialustana, jossa voit lukea ja kirjoittaa blogipostauksia.
         </p>
 
         <div className="hero-actions">
@@ -18,26 +18,26 @@ function LandingPage() {
 
       <section className="feature-grid">
         <article className="feature-card">
-          <p className="eyebrow">Routing</p>
-          <h2>React owns the browser routes</h2>
+          <p className="eyebrow">Info boxi</p>
+          <h2>Lisää täytettä</h2>
           <p>
-            The landing page, info pages, blog list, and post detail views all render through client-side routing.
+            Lisää täytettä.
           </p>
         </article>
 
         <article className="feature-card">
-          <p className="eyebrow">API</p>
-          <h2>Express stays focused on data</h2>
+          <p className="eyebrow">Info boxi</p>
+          <h2>Lisää täytettä</h2>
           <p>
-            The backend still exposes the same <code>/api/posts</code> endpoints, so the data layer remains stable during the migration.
+            Lisää täytettä.
           </p>
         </article>
 
         <article className="feature-card">
-          <p className="eyebrow">Workflow</p>
-          <h2>Development and production stay separate</h2>
+          <p className="eyebrow">Info boxi</p>
+          <h2>Lisää täytettä</h2>
           <p>
-            Vite handles local frontend development, while Express can serve the production build as a single-page app.
+            Lisää täytettä.
           </p>
         </article>
       </section>

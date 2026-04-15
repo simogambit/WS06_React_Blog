@@ -9,15 +9,15 @@
 }
 
 :root {
-  --bg: #f4efe6;
-  --paper: rgba(255, 250, 242, 0.86);
-  --ink: #1f2a30;
-  --muted: #58646b;
+  --bg: #38d465;
+  --paper: #003527;
+  --ink: #AADD66;
+  --muted: #AADD66;
   --accent: #c45b2d;
-  --accent-dark: #8d3d1d;
+  --accent-dark: #497c4b;
   --line: rgba(31, 42, 48, 0.12);
   --line-strong: rgba(31, 42, 48, 0.18);
-  --danger: #7e2020;
+  --danger: #c2a5a5;
   --shadow: 0 24px 80px rgba(64, 42, 20, 0.12);
   --font-body: 'Space Grotesk', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
